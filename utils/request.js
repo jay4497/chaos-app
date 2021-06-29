@@ -7,6 +7,8 @@ function request(url, method, headers, body) {
         method,
         headers,
         body,
+    }).then((res) => {
+        return res.json
     })
 }
 
@@ -17,12 +19,4 @@ function serialize(obj) {
             str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]))
         }
     return str.join("&")
-}
-
-export function login(data) {
-    return request('/login', 'POST', {}, data)
-}
-
-export function anime(url) {
-    return request(url)
 }

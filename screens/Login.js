@@ -1,8 +1,7 @@
-import  React, { useState } from 'react'
-import { View, KeyboardAvoidingView, TextInput, Button, Alert, StyleSheet } from 'react-native'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import  React, { useState, useEffect } from 'react'
+import { View, KeyboardAvoidingView, Text, TextInput, Button, Alert, StyleSheet } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import login from '../utils/request'
+import { setAuth } from "../utils/token"
 
 function UserIcon() {
     return (
@@ -21,37 +20,48 @@ export default function Login({navigation}) {
     const [password, setPassword] = useState('')
 
     function submit() {
-        let body = {
-            username: this.state.username,
-            password: this.state.password
-        }
-        login(body).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if(data.status === 0) {
-                navigation.navigate('Home')
-            } else {
+        let body = new FormData()
+        body.append('user', username)
+        body.append('pass', password)
+
+        setAuth('tokensjldkjfaljsd').then((res) => {
+            if(res === null) {
                 Alert.alert('failed')
+            } else {
+                navigation.navigate('HomeTab')
             }
         })
     }
 
+    function focus(e) {
+        e.target.setNativeProps({ borderColor: 'blue'})
+    }
+
+    function blur(e) {
+        e.target.setNativeProps({ borderColor: '#666'})
+    }
+
     return (
-        <KeyboardAvoidingView style={{ flex: 1, justifyContent: 'center'}}>
+        <KeyboardAvoidingView style={{ flex: 1, justifyContent: 'space-between'}}>
+            <View style={{ flex: 0.3}}></View>
             <View style={{ flex: 0.3, alignItems: 'center', justifyContent: 'center'}}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <UserIcon/>
-                    <TextInput inlineImageLeft='' textContentType='username' placeholder='Username' style={styles.input} onChange={setUsername} />
+                    <TextInput textContentType='username' placeholder='Username' style={styles.input} onChangeText={setUsername} onFocus={focus} onBlur={blur} />
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <PasswordIcon/>
-                    <TextInput textContentType='password' placeholder='Password' style={styles.input} onChange={setPassword}/>
+                    <TextInput textContentType='password' secureTextEntry={true} placeholder='Password' style={styles.input} onChangeText={setPassword} onFocus={focus} onBlur={blur} />
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', marginTop: 12 }}>
                     <View style={{ flex: 0.7 }}>
                         <Button title='登录' onPress={submit} />
                     </View>
                 </View>
+            </View>
+            <View style={{ flex: 0.2 }}></View>
+            <View style={{ flex: 0.1, alignItems: 'center' }}>
+                <Text style={{ color: '#999' }}>chaos-jay4497</Text>
             </View>
         </KeyboardAvoidingView>
     )
@@ -61,6 +71,7 @@ export default function Login({navigation}) {
 const styles = StyleSheet.create({
     input: {
         flex: 0.7,
+        borderColor: '#666',
         borderWidth: 1,
         borderRadius: 5,
         paddingRight: 12,
@@ -79,7 +90,7 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
         height: 40,
         lineHeight:40,
-        borderWidth: 1,
+        borderWidth: 0,
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
         borderRightWidth: 0,

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -8,47 +8,80 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Login from './screens/Login'
 import Animes from './screens/Animes'
 import Panel from './screens/Panel'
+import Home from './screens/Home'
+import { check } from './utils/token'
 
-const TStack = new createStackNavigator()
+function CheckAuth({navigation}) {
+    return {
+        'focus': e => {
+            check().then((res) => {
+                let isAuth = res? true: false
+                if(!isAuth) {
+                    navigation.navigate('Login')
+                }
+            })
+        }
+    }
+}
+
+const Stack = new createStackNavigator()
+const Tab = new createBottomTabNavigator()
 function ToolsTab() {
     return (
-        <TStack.Navigator>
-            <TStack.Screen name='Panel' component={Panel} />
-            <TStack.Screen name='Animes' component={Animes} />
-        </TStack.Navigator>
+        <Stack.Navigator initialRouteName='Panel'>
+            <Stack.Screen listeners={CheckAuth} name='Panel' component={Panel} />
+            <Stack.Screen listeners={CheckAuth} name='Animes' component={Animes} />
+        </Stack.Navigator>
     )
 }
 
-const Tab = new createBottomTabNavigator()
+function HomeTab() {
+    return (
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName
+
+                    if (route.name === 'Home') {
+                        iconName = focused ? 'home' : 'home-outline'
+                    } else if (route.name === 'Tools') {
+                        iconName = focused ? 'ellipsis-horizontal' : 'ellipsis-horizontal-outline'
+                    }
+
+                    // You can return any component that you like here!
+                    return <Ionicons name={iconName} size={size} color={color} />
+                }
+            })}
+            tabBarOptions={{
+                keyboardHidesTabBar: true
+            }}
+            initialRouteName='Home'
+        >
+            <Tab.Screen listeners={CheckAuth} backBehavior='none' name='Home' component={Home} />
+            <Tab.Screen listeners={CheckAuth} backBehavior='initialRoute' name='Tools' component={ToolsTab} />
+        </Tab.Navigator>
+    )
+}
+
 export default function App() {
-  return (
-      <SafeAreaProvider>
-          <NavigationContainer>
-              <Tab.Navigator
-                  screenOptions={({ route }) => ({
-                      tabBarIcon: ({ focused, color, size }) => {
-                          let iconName
+    const [ isAuth, setAuth ] = useState(false)
 
-                          if (route.name === 'Login') {
-                              iconName = focused ? 'home' : 'home-outline'
-                          } else if (route.name === 'Tools') {
-                              iconName = focused ? 'ellipsis-horizontal' : 'ellipsis-horizontal-outline'
-                          }
+    useEffect(() => {
+        check().then((res) => {
+            res? setAuth(true): setAuth(false)
+        })
+    })
 
-                          // You can return any component that you like here!
-                          return <Ionicons name={iconName} size={size} color={color} />
-                      }
-                  })}
-                  tabBarOptions={{
-                      keyboardHidesTabBar: true
-                  }}
-              >
-                  <Tab.Screen name="Login" options={{ title: "Login" }} component={Login} />
-                  <Tab.Screen name="Tools" options={{ title: "Tools" }} component={ToolsTab} />
-              </Tab.Navigator>
-          </NavigationContainer>
-      </SafeAreaProvider>
-  )
+    return (
+        <SafeAreaProvider>
+            <NavigationContainer>
+                <Stack.Navigator mode='modal' headerMode='none' initialRouteName={ isAuth? 'HomeTab': 'Login' }>
+                    <Stack.Screen name='Login' backBehavior='none' component={Login} />
+                    <Stack.Screen name='HomeTab' component={HomeTab} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </SafeAreaProvider>
+    )
 }
 
 const styles = StyleSheet.create({

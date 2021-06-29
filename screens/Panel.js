@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const panelItems = [
@@ -29,14 +28,14 @@ export default function Panel() {
     }
 
     return (
-        <SafeAreaView style={{ marginTop: 12 }}>
+        <View style={{ marginTop: 12 }}>
             <FlatList
                 data={panelItems}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 style={{ marginTop: 0 }}
             />
-        </SafeAreaView>
+        </View>
     )
 }
 

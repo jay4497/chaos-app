@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import anime from '../utils/request'
 
 const Card = ({anime}) => {
     return (
@@ -34,15 +32,13 @@ export default function Animes() {
     }, [])
 
     return (
-        <SafeAreaView style={{ marginTop: 12 }}>
-            <ScrollView>
-                {animes.map((anime, key) => {
-                    return (
-                        <Card anime={anime} key={key} />
-                    )
-                })}
-            </ScrollView>
-        </SafeAreaView>
+        <ScrollView style={{ marginTop: 12 }}>
+            {animes.map((anime, key) => {
+                return (
+                    <Card anime={anime} key={key} />
+                )
+            })}
+        </ScrollView>
     )
 }
 
