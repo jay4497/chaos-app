@@ -1,22 +1,17 @@
-const base_url = ''
+import axios from 'axios'
+import { ToastAndroid } from 'react-native'
 
-function request(url, method, headers, body) {
-    headers = headers? headers: {}
-    body = body? body: {}
-    return fetch(url, {
-        method,
-        headers,
-        body,
-    }).then((res) => {
-        return res.json
-    })
-}
+const service = axios.create({
+    timeout: 300,
+    validateStatus: function (status) {
+        return status >= 200 && status < 400
+    }
+})
 
-function serialize(obj) {
-    let str = []
-    for (let p in obj)
-        if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]))
-        }
-    return str.join("&")
-}
+service.interceptors.response.use((res) => {
+    return res
+}, (err) => {
+    ToastAndroid.show('发生未知错误', ToastAndroid.SHORT)
+})
+
+export default service

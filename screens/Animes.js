@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, StyleSheet } from 'react-native'
+import { getAnimes } from "../api/anime"
+import { toast } from "../utils/chaos"
 
 const Card = ({anime}) => {
     return (
@@ -24,10 +26,10 @@ export default function Animes() {
     const [animes, setAnimes] = useState([])
 
     useEffect(() => {
-        fetch('https://api.jikan.moe/v3/season/2021/summer').then((res) => {
-            return res.json()
-        }).then((data) => {
-            setAnimes(data.anime)
+        getAnimes('2021', 'summer').then((res) => {
+            setAnimes(res.data.anime)
+        }).catch((e) => {
+            toast('发生未知错误')
         })
     }, [])
 
@@ -43,14 +45,6 @@ export default function Animes() {
 }
 
 const styles = StyleSheet.create({
-    navtitle: {
-        fontSize: 24,
-        height: 40,
-        lineHeight: 40,
-        marginTop: 12,
-        marginBottom: 16,
-        paddingLeft: 12
-    },
     title: {
         height: 36,
         lineHeight: 36,

@@ -1,7 +1,9 @@
 import  React, { useState, useEffect } from 'react'
 import { View, KeyboardAvoidingView, Text, TextInput, Button, Alert, StyleSheet } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { setAuth } from "../utils/token"
+import { setAuth } from '../utils/token'
+import { login } from "../api/auth"
+import { toast } from "../utils/chaos"
 
 function UserIcon() {
     return (
@@ -20,17 +22,39 @@ export default function Login({navigation}) {
     const [password, setPassword] = useState('')
 
     function submit() {
-        let body = new FormData()
-        body.append('user', username)
-        body.append('pass', password)
-
-        setAuth('tokensjldkjfaljsd').then((res) => {
+        let body = {
+            user: username,
+            pass: password
+        }
+        login(body).then((result) => {
+            if (result.data.status === 0) {
+                setAuth(result.data.data).then((res) => {
+                    if (res === null) {
+                        toast('登录失败，请重试')
+                    } else {
+                        navigation.navigate('HomeTab')
+                    }
+                })
+            } else {
+                toast(result.data.message)
+            }
+        }).catch((e) => {
+            toast('发生未知错误')
+        })
+        /**
+        setAuth({
+            userid: '123',
+            access_token: 'jlajsjdlfjalsf',
+            access_token_expire: '2021-07-31',
+            refresh_token: 'lajsldjflajlsdjflajlskd'
+        }).then((res) => {
             if(res === null) {
-                Alert.alert('failed')
+                ToastAndroid.show('failed', ToastAndroid.SHORT)
             } else {
                 navigation.navigate('HomeTab')
             }
         })
+        */
     }
 
     function focus(e) {
@@ -66,7 +90,6 @@ export default function Login({navigation}) {
         </KeyboardAvoidingView>
     )
 }
-
 
 const styles = StyleSheet.create({
     input: {

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 
-export default globalStyles = () => {
+export default globalStyles = StyleSheet.create({
     return {
         navtitle: {
             fontSize: 24,
@@ -11,4 +11,4 @@ export default globalStyles = () => {
             paddingLeft: 12
         }
     }
-}
+})
