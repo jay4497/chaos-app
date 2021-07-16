@@ -8,6 +8,11 @@ const panelItems = [
         id: '0',
         screen: 'Animes',
         title: 'Animes'
+    },
+    {
+        id: '1',
+        screen: 'Kotoba',
+        title: 'Kotoba'
     }
 ]
 

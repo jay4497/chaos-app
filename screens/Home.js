@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Button, Alert, StyleSheet } from 'react-native'
+import { View, Text, Button } from 'react-native'
 import { clearAuth } from "../utils/token"
 
 export default function Home({navigation}) {
@@ -13,7 +13,6 @@ export default function Home({navigation}) {
         })
     }
 
-
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <View style={{ flex: 0.1 }}>
@@ -25,6 +24,5 @@ export default function Home({navigation}) {
                 </View>
             </View>
         </View>
-
     )
 }

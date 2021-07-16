@@ -9,7 +9,7 @@ export async function login(data) {
     })
 }
 
-export function refreshToken(data) {
+export async function refreshToken(data) {
     return request({
         method: 'post',
         url: AUTH_BASE_URL + '/auth/refresh_token',

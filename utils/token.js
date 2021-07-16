@@ -11,7 +11,7 @@ export async function check() {
             || uid === null) {
             return null
         }
-        let token_expire_ts = Date.parse(token_expire)
+        let token_expire_ts = Date.parse(token_expire.replace(/-/g,'/'))
         if(token_expire_ts < Date.now()) {
             await AsyncStorage.removeItem('auth_token')
             let refresh_token = await AsyncStorage.getItem('auth_refresh_token')
@@ -21,7 +21,7 @@ export async function check() {
             }
             let result = await refreshToken(refresh_data)
             if(result.data.status === 0) {
-                setAuth(result.data.data)
+                await setAuth(result.data.data)
                 return true
             } else {
                 return null
