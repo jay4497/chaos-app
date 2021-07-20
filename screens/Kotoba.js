@@ -4,11 +4,23 @@ import { create } from '../api/kotoba'
 import { toast } from '../utils/chaos'
 import styles from './styles'
 
-export default function Kotoba() {
+export default function Kotoba({route, navigation}) {
     const [content, setContent] = useState('')
     const [role, setRole] = useState('')
     const [author, setAuthor] = useState('')
     const [source, setSource] = useState('')
+
+    useEffect(() => {
+        try {
+            let kotoba = route.params.item
+            if (kotoba) {
+                setContent(kotoba.content)
+                setRole(kotoba.role)
+                setAuthor(kotoba.author)
+                setSource(kotoba.source)
+            }
+        } catch (e) {}
+    })
 
     const submit = () => {
         let body = {
@@ -24,6 +36,7 @@ export default function Kotoba() {
                 setAuthor('')
                 setRole('')
                 setSource('')
+                navigation.navigate('KotobaList')
             } else {
                 toast(res.data.message)
             }

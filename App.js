@@ -10,6 +10,7 @@ import Animes from './screens/Animes'
 import Panel from './screens/Panel'
 import Home from './screens/Home'
 import Kotoba from './screens/Kotoba'
+import KotobaList from './screens/KotobaList'
 import { check } from './utils/token'
 
 function CheckAuth({navigation}) {
@@ -33,6 +34,7 @@ function ToolsTab() {
             <Stack.Screen listeners={CheckAuth} name='Panel' component={Panel} />
             <Stack.Screen listeners={CheckAuth} name='Animes' component={Animes} />
             <Stack.Screen listeners={CheckAuth} name='Kotoba' component={Kotoba} />
+            <Stack.Screen listeners={CheckAuth} name='KotobaList' component={KotobaList} />
         </Stack.Navigator>
     )
 }

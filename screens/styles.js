@@ -20,14 +20,14 @@ const globalStyles = StyleSheet.create({
         borderRadius: 5,
         paddingRight: 12,
         paddingLeft: 12,
-        //marginTop: 12,
         borderLeftWidth: 0,
         borderRightWidth: 0,
         borderTopWidth: 0,
         borderTopLeftRadius: 0,
         borderBottomLeftRadius: 0,
         lineHeight: 40,
-        height: 40
+        height: 40,
+        backgroundColor: '#fff'
     },
     textarea: {
         flex: 1,
@@ -36,14 +36,17 @@ const globalStyles = StyleSheet.create({
         borderRadius: 5,
         paddingRight: 12,
         paddingLeft: 12,
-        //marginTop: 12,
         borderLeftWidth: 0,
         borderRightWidth: 0,
         borderTopWidth: 0,
         borderTopLeftRadius: 0,
         borderBottomLeftRadius: 0,
         lineHeight: 25,
-        textAlignVertical: 'top'
+        textAlignVertical: 'top',
+        backgroundColor: '#fff'
+    },
+    textline: {
+        lineHeight: 24
     }
 })
 

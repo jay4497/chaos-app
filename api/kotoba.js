@@ -8,3 +8,11 @@ export function create(data) {
         data
     })
 }
+
+export function query(params) {
+    return request({
+        method: 'get',
+        url: AUTH_BASE_URL + '/kotoba',
+        params
+    })
+}

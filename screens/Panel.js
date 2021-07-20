@@ -11,7 +11,7 @@ const panelItems = [
     },
     {
         id: '1',
-        screen: 'Kotoba',
+        screen: 'KotobaList',
         title: 'Kotoba'
     }
 ]
